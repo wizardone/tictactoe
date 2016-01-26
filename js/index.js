@@ -12,23 +12,26 @@ var Board = React.createClass({
     border: 1,
     borderStyle: 'solid'
   },
+  handleClick: function(item) {
+    console.log(item.target)
+  },
   render: function () {
     return <table className="tictactoe" style={this.tableStyle}>
     <tbody>
     <tr>
-    <td className="row_0" style={this.rowStyle}></td>
-    <td className="row_1" style={this.rowStyle}></td>
-    <td className="row_2" style={this.rowStyle}></td>
+    <td className="row_0" style={this.rowStyle} onClick={this.handleClick}></td>
+    <td className="row_1" style={this.rowStyle} onClick={this.handleClick}></td>
+    <td className="row_2" style={this.rowStyle} onClick={this.handleClick}></td>
     </tr>
     <tr>
-    <td className="row_3" style={this.rowStyle}></td>
-    <td className="row_4" style={this.rowStyle}></td>
-    <td className="row_5" style={this.rowStyle}></td>
+    <td className="row_3" style={this.rowStyle} onClick={this.handleClick}></td>
+    <td className="row_4" style={this.rowStyle} onClick={this.handleClick}></td>
+    <td className="row_5" style={this.rowStyle} onClick={this.handleClick}></td>
     </tr>
     <tr>
-    <td className="row_6" style={this.rowStyle}></td>
-    <td className="row_7" style={this.rowStyle}></td>
-    <td className="row_8" style={this.rowStyle}></td>
+    <td className="row_6" style={this.rowStyle} onClick={this.handleClick}></td>
+    <td className="row_7" style={this.rowStyle} onClick={this.handleClick}></td>
+    <td className="row_8" style={this.rowStyle} onClick={this.handleClick}></td>
     </tr>
     </tbody>
     </table>

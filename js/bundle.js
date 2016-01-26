@@ -4,42 +4,6 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
 
-class CanvasBoard {
-  constructor(canvas, width, height) {
-    this.canvas = canvas;
-    this.width = width;
-    this.height = height;
-    this.id = 'tictactoeboard';
-
-    this.drawVertical();
-    this.drawHorizontal();
-  }
-
-  drawVertical() {
-    var ctx = this.canvas.getContext('2d');
-    for (var i = 1; i <= 2; i++) {
-      ctx.beginPath();
-      var chunkHeight = this.canvas.height / 3;
-      var height = chunkHeight * i;
-      ctx.moveTo(0, height);
-      ctx.lineTo(this.canvas.width, height);
-      ctx.stroke();
-    }
-  }
-
-  drawHorizontal() {
-    var ctx = this.canvas.getContext('2d');
-    for (var i = 1; i <= 2; i++) {
-      ctx.beginPath();
-      var chunkWidth = this.canvas.width / 3;
-      var width = chunkWidth * i;
-      ctx.moveTo(width, 0);
-      ctx.lineTo(width, this.canvas.height);
-      ctx.stroke();
-    }
-  }
-}
-
 var Board = React.createClass({
   displayName: 'Board',
 
@@ -51,6 +15,9 @@ var Board = React.createClass({
     border: 1,
     borderStyle: 'solid'
   },
+  handleClick: function (item) {
+    console.log(item.target);
+  },
   render: function () {
     return React.createElement(
       'table',
@@ -61,23 +28,23 @@ var Board = React.createClass({
         React.createElement(
           'tr',
           null,
-          React.createElement('td', { className: 'row_0', style: this.rowStyle }),
-          React.createElement('td', { className: 'row_1', style: this.rowStyle }),
-          React.createElement('td', { className: 'row_2', style: this.rowStyle })
+          React.createElement('td', { className: 'row_0', style: this.rowStyle, onClick: this.handleClick }),
+          React.createElement('td', { className: 'row_1', style: this.rowStyle, onClick: this.handleClick }),
+          React.createElement('td', { className: 'row_2', style: this.rowStyle, onClick: this.handleClick })
         ),
         React.createElement(
           'tr',
           null,
-          React.createElement('td', { className: 'row_3', style: this.rowStyle }),
-          React.createElement('td', { className: 'row_4', style: this.rowStyle }),
-          React.createElement('td', { className: 'row_5', style: this.rowStyle })
+          React.createElement('td', { className: 'row_3', style: this.rowStyle, onClick: this.handleClick }),
+          React.createElement('td', { className: 'row_4', style: this.rowStyle, onClick: this.handleClick }),
+          React.createElement('td', { className: 'row_5', style: this.rowStyle, onClick: this.handleClick })
         ),
         React.createElement(
           'tr',
           null,
-          React.createElement('td', { className: 'row_6', style: this.rowStyle }),
-          React.createElement('td', { className: 'row_7', style: this.rowStyle }),
-          React.createElement('td', { className: 'row_8', style: this.rowStyle })
+          React.createElement('td', { className: 'row_6', style: this.rowStyle, onClick: this.handleClick }),
+          React.createElement('td', { className: 'row_7', style: this.rowStyle, onClick: this.handleClick }),
+          React.createElement('td', { className: 'row_8', style: this.rowStyle, onClick: this.handleClick })
         )
       )
     );
