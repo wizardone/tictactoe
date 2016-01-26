@@ -2,6 +2,10 @@
 
 var React = require('react');
 var ReactDOM = require('react-dom');
+//var player = require('./player.js');
+import Player from './player'
+
+var _player = new Player('cross')
 
 var Board = React.createClass({
   tableStyle: {
@@ -13,7 +17,12 @@ var Board = React.createClass({
     borderStyle: 'solid'
   },
   handleClick: function(item) {
-    console.log(item.target)
+    var index = item.target.className.split('_')[1];
+    console.log(index);
+  },
+
+  handleTurn: function() {
+    
   },
   render: function () {
     return <table className="tictactoe" style={this.tableStyle}>
