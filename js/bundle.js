@@ -34,9 +34,9 @@ var Board = React.createClass({
   },
 
   getInitialState: function getInitialState() {
-    console.log('Getting initial state');
     return {
       players: [_player1, _player2],
+      freeIndexes: [0, 1, 2, 3, 4, 5, 6, 7, 8],
       totalTurns: 0,
       currentTurn: 0
     };
@@ -50,9 +50,14 @@ var Board = React.createClass({
   },
 
   handleClick: function handleClick(item) {
-    var index = item.target.className.split('_')[1];
-    this.setImage(item.target);
-    this.handleTurn();
+    var index = parseInt(item.target.className.split('_')[1]);
+    console.log(this.state.freeIndexes.indexOf(index));
+    if (this.state.freeIndexes.indexOf(index) >= 0) {
+      this.setImage(item.target);
+      this.handleTurn();
+    } else {
+      console.log('DO NOTHING');
+    }
   },
 
   setImage: function setImage(target) {
@@ -67,7 +72,6 @@ var Board = React.createClass({
   },
 
   handleTurn: function handleTurn() {
-    console.log(this.state);
     var turn;
     if (this.state.currentTurn == 0) turn = 1;else if (this.state.currentTurn == 1) turn = 0;
     this.setState({ totalTurns: this.state.totalTurns + 1,
