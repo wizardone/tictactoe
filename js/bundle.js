@@ -1,17 +1,17 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 'use strict';
 
-var _player2 = require('./player');
+var _player = require('./player');
 
-var _player3 = _interopRequireDefault(_player2);
+var _player3 = _interopRequireDefault(_player);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var React = require('react');
 var ReactDOM = require('react-dom');
-//var player = require('./player.js');
 
-var _player = new _player3.default('cross');
+var _player1 = new _player3.default('cross');
+var _player2 = new _player3.default('circle');
 
 var Board = React.createClass({
   displayName: 'Board',
@@ -20,16 +20,38 @@ var Board = React.createClass({
     width: 400,
     height: 400
   },
+
+  imageStyle: {
+    width: 120,
+    height: 120
+  },
+
   rowStyle: {
     border: 1,
+    width: 130,
+    height: 130,
     borderStyle: 'solid'
   },
+
   handleClick: function handleClick(item) {
     var index = item.target.className.split('_')[1];
-    console.log(index);
+    this.setImage(item.target);
+  },
+
+  setImage: function setImage(target) {
+    var PlayImage = React.createClass({
+      displayName: 'PlayImage',
+
+      render: function render() {
+        return React.createElement('img', { src: 'images/playX.png' });
+      }
+    });
+    ReactDOM.render(React.createElement(PlayImage, null), target);
   },
 
   handleTurn: function handleTurn() {},
+
+  players: function players() {},
   render: function render() {
     return React.createElement(
       'table',
@@ -78,12 +100,19 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 var Player = function () {
   function Player(sign) {
+    var ai = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
+
     _classCallCheck(this, Player);
 
     this._sign = sign;
   }
 
   _createClass(Player, [{
+    key: 'image',
+    value: function image() {
+      if (this._sign == 'cross') 'playX.png';else if (this._sign == 'circle') 'playO.png';
+    }
+  }, {
     key: 'sign',
     set: function set(sign) {
       this._sign = sign;

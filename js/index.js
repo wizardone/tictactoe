@@ -2,27 +2,50 @@
 
 var React = require('react');
 var ReactDOM = require('react-dom');
-//var player = require('./player.js');
+
 import Player from './player'
 
-var _player = new Player('cross')
+var _player1 = new Player('cross');
+var _player2 = new Player('circle');
 
 var Board = React.createClass({
   tableStyle: {
     width: 400,
     height: 400
   },
+
+  imageStyle: {
+    width: 120,
+    height: 120
+  },
+
   rowStyle: {
     border: 1,
+    width: 130,
+    height: 130,
     borderStyle: 'solid'
   },
+
   handleClick: function(item) {
     var index = item.target.className.split('_')[1];
-    console.log(index);
+    this.setImage(item.target);
+  },
+
+  setImage: function(target) {
+    var PlayImage = React.createClass({
+      render: function () {
+        return <img src={'images/playX.png'}/>
+      }
+    });
+    ReactDOM.render(<PlayImage />, target);
   },
 
   handleTurn: function() {
-    
+
+  },
+
+  players: function () {
+
   },
   render: function () {
     return <table className="tictactoe" style={this.tableStyle}>
