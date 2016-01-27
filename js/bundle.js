@@ -33,9 +33,26 @@ var Board = React.createClass({
     borderStyle: 'solid'
   },
 
+  getInitialState: function getInitialState() {
+    console.log('Getting initial state');
+    return {
+      players: [_player1, _player2],
+      totalTurns: 0,
+      currentTurn: 0
+    };
+  },
+
+  componentDidMount: function componentDidMount() {
+    console.log('Mounting component');
+    console.log('Players: ' + this.state.players);
+    console.log('First Turn: ' + this.state.firstTurn);
+    console.log('Current Turn: ' + this.state.currentTurn);
+  },
+
   handleClick: function handleClick(item) {
     var index = item.target.className.split('_')[1];
     this.setImage(item.target);
+    this.handleTurn();
   },
 
   setImage: function setImage(target) {
@@ -43,15 +60,22 @@ var Board = React.createClass({
       displayName: 'PlayImage',
 
       render: function render() {
-        return React.createElement('img', { src: 'images/playX.png' });
+        return React.createElement('img', { src: 'images/playX.png', width: 120, height: 120 });
       }
     });
     ReactDOM.render(React.createElement(PlayImage, null), target);
   },
 
-  handleTurn: function handleTurn() {},
+  handleTurn: function handleTurn() {
+    console.log(this.state);
+    var turn;
+    if (this.state.currentTurn == 0) turn = 1;else if (this.state.currentTurn == 1) turn = 0;
+    this.setState({ totalTurns: this.state.totalTurns + 1,
+      currentTurn: turn });
+  },
 
-  players: function players() {},
+  startTurn: function startTurn() {},
+
   render: function render() {
     return React.createElement(
       'table',

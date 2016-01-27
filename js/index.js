@@ -26,27 +26,50 @@ var Board = React.createClass({
     borderStyle: 'solid'
   },
 
+  getInitialState: function () {
+    return {
+      players: [_player1, _player2],
+      totalTurns: 0,
+      currentTurn: 0
+    }
+  },
+
+  componentDidMount: function () {
+    console.log('Mounting component');
+    console.log('Players: ' + this.state.players);
+    console.log('First Turn: ' + this.state.firstTurn);
+    console.log('Current Turn: ' + this.state.currentTurn);
+  },
+
   handleClick: function(item) {
     var index = item.target.className.split('_')[1];
     this.setImage(item.target);
+    this.handleTurn();
   },
 
   setImage: function(target) {
     var PlayImage = React.createClass({
       render: function () {
-        return <img src={'images/playX.png'}/>
+        return <img src={'images/playX.png'} width={120} height={120}/>
       }
     });
     ReactDOM.render(<PlayImage />, target);
   },
 
   handleTurn: function() {
+    var turn
+    if (this.state.currentTurn == 0)
+      turn = 1
+    else if (this.state.currentTurn == 1)
+      turn = 0
+    this.setState({totalTurns: this.state.totalTurns + 1,
+                   currentTurn: turn});
+  },
+
+  startTurn: function() {
 
   },
 
-  players: function () {
-
-  },
   render: function () {
     return <table className="tictactoe" style={this.tableStyle}>
     <tbody>
