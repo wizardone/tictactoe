@@ -54,9 +54,10 @@ var Board = React.createClass({
   },
 
   setImage: function(target) {
+    var imageSrc = _player1.imageSrc();
     var PlayImage = React.createClass({
       render: function () {
-        return <img src={'images/playX.png'} width={120} height={120}/>
+        return <img src={imageSrc} width={120} height={120}/>
       }
     });
     ReactDOM.render(<PlayImage />, target);

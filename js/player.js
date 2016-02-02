@@ -5,15 +5,10 @@ export default class Player {
     this._sign = sign
   }
 
-  image () {
+  imageSrc () {
     if (this._sign == 'cross')
-      'playX.png'
+      return 'images/playX.png'
     else if (this._sign == 'circle')
-      'playO.png'
-  }
-
-  set sign (sign) {
-    this._sign = sign
+      return 'images/playO.png'
   }
 }
-

@@ -51,10 +51,7 @@ var Board = React.createClass({
 
   handleClick: function handleClick(item) {
     var index = parseInt(item.target.className.split('_')[1]);
-    console.log(this.state.freeIndexes);
-    console.log(this.state.freeIndexes.indexOf(index) >= 0);
     if (this.state.freeIndexes.indexOf(index) >= 0) {
-      console.log('what');
       this.setImage(item.target);
       this.handleTurn();
       this.updateIndexes(index);
@@ -64,11 +61,13 @@ var Board = React.createClass({
   },
 
   setImage: function setImage(target) {
+    var imageSrc = _player1.imageSrc();
+    console.log(imageSrc);
     var PlayImage = React.createClass({
       displayName: 'PlayImage',
 
       render: function render() {
-        return React.createElement('img', { src: 'images/playX.png', width: 120, height: 120 });
+        return React.createElement('img', { src: imageSrc, width: 120, height: 120 });
       }
     });
     ReactDOM.render(React.createElement(PlayImage, null), target);
@@ -143,14 +142,9 @@ var Player = function () {
   }
 
   _createClass(Player, [{
-    key: 'image',
-    value: function image() {
-      if (this._sign == 'cross') 'playX.png';else if (this._sign == 'circle') 'playO.png';
-    }
-  }, {
-    key: 'sign',
-    set: function set(sign) {
-      this._sign = sign;
+    key: 'imageSrc',
+    value: function imageSrc() {
+      if (this._sign == 'cross') return 'images/playX.png';else if (this._sign == 'circle') return 'images/playO.png';
     }
   }]);
 
