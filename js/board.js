@@ -1,12 +1,6 @@
 'use strict'
-
 var React = require('react');
 var ReactDOM = require('react-dom');
-
-import Player from './player'
-
-var _player1 = new Player('cross');
-var _player2 = new Player('circle');
 
 var Board = React.createClass({
   tableStyle: {
@@ -44,13 +38,10 @@ var Board = React.createClass({
 
   handleClick: function(item) {
     var index = parseInt(item.target.className.split('_')[1]);
-    if (this.state.freeIndexes.indexOf(index) >= 0) {
+    if (this.state.freeIndexes.indexOf(index) >= 0)
       this.setImage(item.target);
       this.handleTurn();
       this.updateIndexes(index);
-    } else {
-      console.log('No go');
-    }
   },
 
   setImage: function(target) {
@@ -72,10 +63,11 @@ var Board = React.createClass({
                    currentTurn: turn});
   },
 
-  updateIndexes: function(index) {
-    this.state.freeIndexes.splice(index, 1)
-    this.setState({freeIndexes: this.state.freeIndexes});
+  updateIndexes: function(element) {
+    var index = this.state.freeIndexes.indexOf(element);
+    this.setState({freeIndexes: this.state.freeIndexes.splice(index, 1)});
   },
+
   startTurn: function() {
 
   },
@@ -103,8 +95,4 @@ var Board = React.createClass({
   }
 });
 
-ReactDOM.render(
-  <Board width={800} height={800}/>,
-  document.getElementById('tictactoe')
-);
-
+module.exports = Board

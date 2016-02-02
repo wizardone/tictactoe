@@ -51,12 +51,15 @@ var Board = React.createClass({
 
   handleClick: function handleClick(item) {
     var index = parseInt(item.target.className.split('_')[1]);
-    console.log(this.state.freeIndexes.indexOf(index));
+    console.log(this.state.freeIndexes);
+    console.log(this.state.freeIndexes.indexOf(index) >= 0);
     if (this.state.freeIndexes.indexOf(index) >= 0) {
+      console.log('what');
       this.setImage(item.target);
       this.handleTurn();
+      this.updateIndexes(index);
     } else {
-      console.log('DO NOTHING');
+      console.log('No go');
     }
   },
 
@@ -78,6 +81,10 @@ var Board = React.createClass({
       currentTurn: turn });
   },
 
+  updateIndexes: function updateIndexes(index) {
+    this.state.freeIndexes.splice(index, 1);
+    this.setState({ freeIndexes: this.state.freeIndexes });
+  },
   startTurn: function startTurn() {},
 
   render: function render() {
