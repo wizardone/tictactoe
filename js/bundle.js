@@ -13,6 +13,18 @@ var ReactDOM = require('react-dom');
 var _player1 = new _player3.default('cross');
 var _player2 = new _player3.default('circle');
 
+var InfoBoard = React.createClass({
+  displayName: 'InfoBoard',
+
+  render: function render() {
+    return React.createElement(
+      'div',
+      { className: 'playerTurn' },
+      this.props.player
+    );
+  }
+});
+
 var Board = React.createClass({
   displayName: 'Board',
 
@@ -62,7 +74,6 @@ var Board = React.createClass({
 
   setImage: function setImage(target) {
     var imageSrc = _player1.imageSrc();
-    console.log(imageSrc);
     var PlayImage = React.createClass({
       displayName: 'PlayImage',
 
@@ -76,6 +87,7 @@ var Board = React.createClass({
   handleTurn: function handleTurn() {
     var turn;
     if (this.state.currentTurn == 0) turn = 1;else if (this.state.currentTurn == 1) turn = 0;
+
     this.setState({ totalTurns: this.state.totalTurns + 1,
       currentTurn: turn });
   },
@@ -84,35 +96,46 @@ var Board = React.createClass({
     this.state.freeIndexes.splice(index, 1);
     this.setState({ freeIndexes: this.state.freeIndexes });
   },
-  startTurn: function startTurn() {},
+
+  currentPlayerName: function currentPlayerName() {
+    var player;
+    if (this.state.currentTurn == 0) player = _player1;else if (this.state.currentTurn == 1) player = _player2;
+
+    return player._name;
+  },
 
   render: function render() {
     return React.createElement(
-      'table',
-      { className: 'tictactoe', style: this.tableStyle },
+      'div',
+      null,
+      React.createElement(InfoBoard, { player: this.currentPlayerName() }),
       React.createElement(
-        'tbody',
-        null,
+        'table',
+        { className: 'tictactoe', style: this.tableStyle },
         React.createElement(
-          'tr',
+          'tbody',
           null,
-          React.createElement('td', { className: 'row_0', style: this.rowStyle, onClick: this.handleClick }),
-          React.createElement('td', { className: 'row_1', style: this.rowStyle, onClick: this.handleClick }),
-          React.createElement('td', { className: 'row_2', style: this.rowStyle, onClick: this.handleClick })
-        ),
-        React.createElement(
-          'tr',
-          null,
-          React.createElement('td', { className: 'row_3', style: this.rowStyle, onClick: this.handleClick }),
-          React.createElement('td', { className: 'row_4', style: this.rowStyle, onClick: this.handleClick }),
-          React.createElement('td', { className: 'row_5', style: this.rowStyle, onClick: this.handleClick })
-        ),
-        React.createElement(
-          'tr',
-          null,
-          React.createElement('td', { className: 'row_6', style: this.rowStyle, onClick: this.handleClick }),
-          React.createElement('td', { className: 'row_7', style: this.rowStyle, onClick: this.handleClick }),
-          React.createElement('td', { className: 'row_8', style: this.rowStyle, onClick: this.handleClick })
+          React.createElement(
+            'tr',
+            null,
+            React.createElement('td', { className: 'row_0', style: this.rowStyle, onClick: this.handleClick }),
+            React.createElement('td', { className: 'row_1', style: this.rowStyle, onClick: this.handleClick }),
+            React.createElement('td', { className: 'row_2', style: this.rowStyle, onClick: this.handleClick })
+          ),
+          React.createElement(
+            'tr',
+            null,
+            React.createElement('td', { className: 'row_3', style: this.rowStyle, onClick: this.handleClick }),
+            React.createElement('td', { className: 'row_4', style: this.rowStyle, onClick: this.handleClick }),
+            React.createElement('td', { className: 'row_5', style: this.rowStyle, onClick: this.handleClick })
+          ),
+          React.createElement(
+            'tr',
+            null,
+            React.createElement('td', { className: 'row_6', style: this.rowStyle, onClick: this.handleClick }),
+            React.createElement('td', { className: 'row_7', style: this.rowStyle, onClick: this.handleClick }),
+            React.createElement('td', { className: 'row_8', style: this.rowStyle, onClick: this.handleClick })
+          )
         )
       )
     );
@@ -139,12 +162,18 @@ var Player = function () {
     _classCallCheck(this, Player);
 
     this._sign = sign;
+    this._name = this.normalizedName();
   }
 
   _createClass(Player, [{
     key: 'imageSrc',
     value: function imageSrc() {
       if (this._sign == 'cross') return 'images/playX.png';else if (this._sign == 'circle') return 'images/playO.png';
+    }
+  }, {
+    key: 'normalizedName',
+    value: function normalizedName() {
+      if (this._sign == 'cross') return 'Player 1';else if (this._sign == 'circle') return 'Player 2';
     }
   }]);
 
