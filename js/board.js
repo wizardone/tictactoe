@@ -2,6 +2,17 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
 
+import Player from './player'
+
+var _player1 = new Player('cross');
+var _player2 = new Player('circle');
+
+var InfoBoard = React.createClass({
+  render: function () {
+    return <div className="playerTurn"> Current turn: {this.props.player}</div>
+  }
+});
+
 var Board = React.createClass({
   tableStyle: {
     width: 400,
@@ -38,16 +49,20 @@ var Board = React.createClass({
 
   handleClick: function(item) {
     var index = parseInt(item.target.className.split('_')[1]);
-    if (this.state.freeIndexes.indexOf(index) >= 0)
+    if (this.state.freeIndexes.indexOf(index) >= 0) {
       this.setImage(item.target);
       this.handleTurn();
       this.updateIndexes(index);
+    } else {
+      console.log('No go');
+    }
   },
 
   setImage: function(target) {
+    var imageSrc = this.currentPlayer().imageSrc();
     var PlayImage = React.createClass({
       render: function () {
-        return <img src={'images/playX.png'} width={120} height={120}/>
+        return <img src={imageSrc} width={120} height={120}/>
       }
     });
     ReactDOM.render(<PlayImage />, target);
@@ -59,39 +74,51 @@ var Board = React.createClass({
       turn = 1
     else if (this.state.currentTurn == 1)
       turn = 0
+
     this.setState({totalTurns: this.state.totalTurns + 1,
-                   currentTurn: turn});
+                  currentTurn: turn});
   },
 
-  updateIndexes: function(element) {
-    var index = this.state.freeIndexes.indexOf(element);
-    this.setState({freeIndexes: this.state.freeIndexes.splice(index, 1)});
+  updateIndexes: function(index) {
+    this.state.freeIndexes.splice(index, 1)
+    this.setState({freeIndexes: this.state.freeIndexes});
   },
 
-  startTurn: function() {
+  currentPlayer: function() {
+    var player;
+    if (this.state.currentTurn == 0)
+      player = _player1;
+    else if (this.state.currentTurn == 1)
+      player = _player2;
 
+    return player;
   },
 
   render: function () {
-    return <table className="tictactoe" style={this.tableStyle}>
-    <tbody>
-    <tr>
-    <td className="row_0" style={this.rowStyle} onClick={this.handleClick}></td>
-    <td className="row_1" style={this.rowStyle} onClick={this.handleClick}></td>
-    <td className="row_2" style={this.rowStyle} onClick={this.handleClick}></td>
-    </tr>
-    <tr>
-    <td className="row_3" style={this.rowStyle} onClick={this.handleClick}></td>
-    <td className="row_4" style={this.rowStyle} onClick={this.handleClick}></td>
-    <td className="row_5" style={this.rowStyle} onClick={this.handleClick}></td>
-    </tr>
-    <tr>
-    <td className="row_6" style={this.rowStyle} onClick={this.handleClick}></td>
-    <td className="row_7" style={this.rowStyle} onClick={this.handleClick}></td>
-    <td className="row_8" style={this.rowStyle} onClick={this.handleClick}></td>
-    </tr>
-    </tbody>
-    </table>
+    return (
+      <div>
+        <InfoBoard player={this.currentPlayer()._name}/>
+        <table className="tictactoe" style={this.tableStyle}>
+          <tbody>
+          <tr>
+          <td className="row_0" style={this.rowStyle} onClick={this.handleClick}></td>
+          <td className="row_1" style={this.rowStyle} onClick={this.handleClick}></td>
+          <td className="row_2" style={this.rowStyle} onClick={this.handleClick}></td>
+          </tr>
+          <tr>
+          <td className="row_3" style={this.rowStyle} onClick={this.handleClick}></td>
+          <td className="row_4" style={this.rowStyle} onClick={this.handleClick}></td>
+          <td className="row_5" style={this.rowStyle} onClick={this.handleClick}></td>
+          </tr>
+          <tr>
+          <td className="row_6" style={this.rowStyle} onClick={this.handleClick}></td>
+          <td className="row_7" style={this.rowStyle} onClick={this.handleClick}></td>
+          <td className="row_8" style={this.rowStyle} onClick={this.handleClick}></td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    )
   }
 });
 
