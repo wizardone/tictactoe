@@ -20,6 +20,7 @@ var InfoBoard = React.createClass({
     return React.createElement(
       'div',
       { className: 'playerTurn' },
+      ' Current turn: ',
       this.props.player
     );
   }
@@ -73,7 +74,7 @@ var Board = React.createClass({
   },
 
   setImage: function setImage(target) {
-    var imageSrc = _player1.imageSrc();
+    var imageSrc = this.currentPlayer().imageSrc();
     var PlayImage = React.createClass({
       displayName: 'PlayImage',
 
@@ -97,18 +98,18 @@ var Board = React.createClass({
     this.setState({ freeIndexes: this.state.freeIndexes });
   },
 
-  currentPlayerName: function currentPlayerName() {
+  currentPlayer: function currentPlayer() {
     var player;
     if (this.state.currentTurn == 0) player = _player1;else if (this.state.currentTurn == 1) player = _player2;
 
-    return player._name;
+    return player;
   },
 
   render: function render() {
     return React.createElement(
       'div',
       null,
-      React.createElement(InfoBoard, { player: this.currentPlayerName() }),
+      React.createElement(InfoBoard, { player: this.currentPlayer()._name }),
       React.createElement(
         'table',
         { className: 'tictactoe', style: this.tableStyle },
