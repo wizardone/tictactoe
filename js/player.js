@@ -4,6 +4,7 @@ export default class Player {
   constructor (sign, ai = false) {
     this._sign = sign
     this._name = this.normalizedName();
+    this.playedTurns = [];
   }
 
   imageSrc () {

@@ -50,24 +50,29 @@ var Board = React.createClass({
     return {
       players: [_player1, _player2],
       freeIndexes: [0, 1, 2, 3, 4, 5, 6, 7, 8],
+      takenIndexes: [],
       totalTurns: 0,
-      currentTurn: 0
+      currentTurn: 0,
+      winningCombos: [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]]
     };
   },
 
   componentDidMount: function componentDidMount() {
-    console.log('Mounting component');
-    console.log('Players: ' + this.state.players);
-    console.log('First Turn: ' + this.state.firstTurn);
-    console.log('Current Turn: ' + this.state.currentTurn);
+    //console.log('Mounting component');
+    //console.log('Players: ' + this.state.players);
+    //console.log('First Turn: ' + this.state.firstTurn);
+    //console.log('Current Turn: ' + this.state.currentTurn);
   },
 
   handleClick: function handleClick(item) {
     var index = parseInt(item.target.className.split('_')[1]);
-    if (this.state.freeIndexes.indexOf(index) >= 0) {
+    console.log(index);
+    console.log(this.state.takenIndexes);
+    if (this.state.takenIndexes.indexOf(index) < 0) {
       this.setImage(item.target);
       this.handleTurn();
-      this.updateIndexes(index);
+      this.updateTakenIndexes(index);
+      this.updatePlayerIndexes(index);
     } else {
       console.log('No go');
     }
@@ -93,9 +98,29 @@ var Board = React.createClass({
       currentTurn: turn });
   },
 
-  updateIndexes: function updateIndexes(index) {
+  updateFreeIndexes: function updateFreeIndexes(index) {
     this.state.freeIndexes.splice(index, 1);
     this.setState({ freeIndexes: this.state.freeIndexes });
+  },
+
+  updateTakenIndexes: function updateTakenIndexes(index) {
+    this.state.takenIndexes.push(index);
+    this.setState({ takenIndexes: this.state.takenIndexes });
+  },
+
+  updatePlayerIndexes: function updatePlayerIndexes(index) {
+    var _this = this;
+
+    var playerTurns = this.currentPlayer().playedTurns;
+    playerTurns.push(index);
+    //console.log(playerTurns);
+    for (var i = 0; i < this.state.winningCombos.length; i++) {
+      if (playerTurns.length == this.state.winningCombos[i].length && playerTurns.every(function (elem, index) {
+        return elem === _this.state.winningCombos[i][index];
+      })) {
+        console.log('YESSSSS');
+      }
+    }
   },
 
   currentPlayer: function currentPlayer() {
@@ -178,6 +203,7 @@ var Player = function () {
 
     this._sign = sign;
     this._name = this.normalizedName();
+    this.playedTurns = [];
   }
 
   _createClass(Player, [{

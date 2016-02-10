@@ -34,28 +34,29 @@ var Board = React.createClass({
   getInitialState: function () {
     return {
       players: [_player1, _player2],
-      freeIndexes: [0,1,2,3,4,5,6,7,8],
+      takenIndexes: [],
       totalTurns: 0,
       currentTurn: 0,
       winningCombos: [[0,1,2], [3,4,5], [6,7,8],
-                      [0,3,6], [1,4,7], [2,5,8],
-                      [0,4,8], [2,4,6]]
+        [0,3,6], [1,4,7], [2,5,8],
+        [0,4,8], [2,4,6]]
     }
   },
 
   componentDidMount: function () {
-    console.log('Mounting component');
-    console.log('Players: ' + this.state.players);
-    console.log('First Turn: ' + this.state.firstTurn);
-    console.log('Current Turn: ' + this.state.currentTurn);
+    //console.log('Mounting component');
+    //console.log('Players: ' + this.state.players);
+    //console.log('First Turn: ' + this.state.firstTurn);
+    //console.log('Current Turn: ' + this.state.currentTurn);
   },
 
   handleClick: function(item) {
     var index = parseInt(item.target.className.split('_')[1]);
-    if (this.state.freeIndexes.indexOf(index) >= 0) {
+    if (this.state.takenIndexes.indexOf(index) < 0) {
       this.setImage(item.target);
       this.handleTurn();
-      this.updateIndexes(index);
+      this.updateTakenIndexes(index);
+      this.updatePlayerIndexes(index);
     } else {
       console.log('No go');
     }
@@ -82,9 +83,21 @@ var Board = React.createClass({
                   currentTurn: turn});
   },
 
-  updateIndexes: function(index) {
-    this.state.freeIndexes.splice(index, 1)
-    this.setState({freeIndexes: this.state.freeIndexes});
+  updateTakenIndexes: function(index) {
+    this.state.takenIndexes.push(index);
+    this.setState({takenIndexes: this.state.takenIndexes});
+  },
+
+  updatePlayerIndexes: function(index) {
+    var playerTurns = this.currentPlayer().playedTurns;
+    playerTurns.push(index);
+    for (var i = 0; i < this.state.winningCombos.length; i++) {
+      if (playerTurns.length == this.state.winningCombos[i].length &&
+         playerTurns.every((elem, index )=> elem === this.state.winningCombos[i][index])
+         ) {
+         console.log('YESSSSS');
+      }
+    }
   },
 
   currentPlayer: function() {
@@ -100,26 +113,26 @@ var Board = React.createClass({
   render: function () {
     return (
       <div>
-        <InfoBoard player={this.currentPlayer()._name}/>
-        <table className="tictactoe" style={this.tableStyle}>
-          <tbody>
-          <tr>
-          <td className="row_0" style={this.rowStyle} onClick={this.handleClick}></td>
-          <td className="row_1" style={this.rowStyle} onClick={this.handleClick}></td>
-          <td className="row_2" style={this.rowStyle} onClick={this.handleClick}></td>
-          </tr>
-          <tr>
-          <td className="row_3" style={this.rowStyle} onClick={this.handleClick}></td>
-          <td className="row_4" style={this.rowStyle} onClick={this.handleClick}></td>
-          <td className="row_5" style={this.rowStyle} onClick={this.handleClick}></td>
-          </tr>
-          <tr>
-          <td className="row_6" style={this.rowStyle} onClick={this.handleClick}></td>
-          <td className="row_7" style={this.rowStyle} onClick={this.handleClick}></td>
-          <td className="row_8" style={this.rowStyle} onClick={this.handleClick}></td>
-          </tr>
-          </tbody>
-        </table>
+      <InfoBoard player={this.currentPlayer()._name}/>
+      <table className="tictactoe" style={this.tableStyle}>
+      <tbody>
+      <tr>
+      <td className="row_0" style={this.rowStyle} onClick={this.handleClick}></td>
+      <td className="row_1" style={this.rowStyle} onClick={this.handleClick}></td>
+      <td className="row_2" style={this.rowStyle} onClick={this.handleClick}></td>
+      </tr>
+      <tr>
+      <td className="row_3" style={this.rowStyle} onClick={this.handleClick}></td>
+      <td className="row_4" style={this.rowStyle} onClick={this.handleClick}></td>
+      <td className="row_5" style={this.rowStyle} onClick={this.handleClick}></td>
+      </tr>
+      <tr>
+      <td className="row_6" style={this.rowStyle} onClick={this.handleClick}></td>
+      <td className="row_7" style={this.rowStyle} onClick={this.handleClick}></td>
+      <td className="row_8" style={this.rowStyle} onClick={this.handleClick}></td>
+      </tr>
+      </tbody>
+      </table>
       </div>
     )
   }
