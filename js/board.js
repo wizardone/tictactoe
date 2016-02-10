@@ -52,7 +52,7 @@ var Board = React.createClass({
 
   handleClick: function(item) {
     var index = parseInt(item.target.className.split('_')[1]);
-    if (this.state.takenIndexes.indexOf(index) < 0) {
+    if (!isNaN(index) && this.state.takenIndexes.indexOf(index) < 0) {
       this.setImage(item.target);
       this.handleTurn();
       this.updateTakenIndexes(index);
@@ -93,9 +93,9 @@ var Board = React.createClass({
     playerTurns.push(index);
     for (var i = 0; i < this.state.winningCombos.length; i++) {
       if (playerTurns.length == this.state.winningCombos[i].length &&
-         playerTurns.every((elem, index )=> elem === this.state.winningCombos[i][index])
+         playerTurns.every((elem, index ) => elem === this.state.winningCombos[i][index])
          ) {
-         console.log('YESSSSS');
+         console.log('Game Over');
       }
     }
   },

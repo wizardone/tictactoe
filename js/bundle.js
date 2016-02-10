@@ -49,7 +49,6 @@ var Board = React.createClass({
   getInitialState: function getInitialState() {
     return {
       players: [_player1, _player2],
-      freeIndexes: [0, 1, 2, 3, 4, 5, 6, 7, 8],
       takenIndexes: [],
       totalTurns: 0,
       currentTurn: 0,
@@ -66,9 +65,7 @@ var Board = React.createClass({
 
   handleClick: function handleClick(item) {
     var index = parseInt(item.target.className.split('_')[1]);
-    console.log(index);
-    console.log(this.state.takenIndexes);
-    if (this.state.takenIndexes.indexOf(index) < 0) {
+    if (!isNaN(index) && this.state.takenIndexes.indexOf(index) < 0) {
       this.setImage(item.target);
       this.handleTurn();
       this.updateTakenIndexes(index);
@@ -98,11 +95,6 @@ var Board = React.createClass({
       currentTurn: turn });
   },
 
-  updateFreeIndexes: function updateFreeIndexes(index) {
-    this.state.freeIndexes.splice(index, 1);
-    this.setState({ freeIndexes: this.state.freeIndexes });
-  },
-
   updateTakenIndexes: function updateTakenIndexes(index) {
     this.state.takenIndexes.push(index);
     this.setState({ takenIndexes: this.state.takenIndexes });
@@ -113,12 +105,11 @@ var Board = React.createClass({
 
     var playerTurns = this.currentPlayer().playedTurns;
     playerTurns.push(index);
-    //console.log(playerTurns);
     for (var i = 0; i < this.state.winningCombos.length; i++) {
       if (playerTurns.length == this.state.winningCombos[i].length && playerTurns.every(function (elem, index) {
         return elem === _this.state.winningCombos[i][index];
       })) {
-        console.log('YESSSSS');
+        console.log('Game Over');
       }
     }
   },
