@@ -66,7 +66,7 @@ var Board = React.createClass({
 
   getInitialState: function getInitialState() {
     return {
-      players: [_player1, _player2],
+      //players: [_player1, _player2],
       takenIndexes: [],
       totalTurns: 0,
       currentTurn: 0,
@@ -127,7 +127,6 @@ var Board = React.createClass({
       if (playerTurns.length == this.state.winningCombos[i].length && playerTurns.every(function (elem) {
         return _this.state.winningCombos[i].includes(elem);
       })) {
-        console.log('Game Over');
         this.setState({ gameOver: true });
       }
     }
