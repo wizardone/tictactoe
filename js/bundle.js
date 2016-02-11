@@ -106,11 +106,15 @@ var Board = React.createClass({
     var playerTurns = this.currentPlayer().playedTurns;
     playerTurns.push(index);
     for (var i = 0; i < this.state.winningCombos.length; i++) {
-      if (playerTurns.length == this.state.winningCombos[i].length && playerTurns.every(function (elem, index) {
-        return elem === _this.state.winningCombos[i][index];
-      })) {
-        console.log('Game Over');
-      }
+      if (playerTurns.length == this.state.winningCombos[i].length &&
+      // Use includes here
+      playerTurns.every(function (elem) {
+        return _this.state.winningCombos[i].includes(elem);
+      })
+      //playerTurns.every((elem, index ) => elem === this.state.winningCombos[i][index])
+      ) {
+          console.log('Game Over');
+        }
     }
   },
 

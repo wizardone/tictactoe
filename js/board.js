@@ -93,7 +93,7 @@ var Board = React.createClass({
     playerTurns.push(index);
     for (var i = 0; i < this.state.winningCombos.length; i++) {
       if (playerTurns.length == this.state.winningCombos[i].length &&
-         playerTurns.every((elem, index ) => elem === this.state.winningCombos[i][index])
+         playerTurns.every(elem => this.state.winningCombos[i].includes(elem))
          ) {
          console.log('Game Over');
       }
