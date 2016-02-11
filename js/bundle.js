@@ -26,6 +26,24 @@ var InfoBoard = React.createClass({
   }
 });
 
+var GameOver = React.createClass({
+  displayName: 'GameOver',
+
+  render: function render() {
+    return React.createElement(
+      'div',
+      null,
+      this.props.player,
+      ' won.',
+      React.createElement(
+        'a',
+        null,
+        'Play again?'
+      )
+    );
+  }
+});
+
 var Board = React.createClass({
   displayName: 'Board',
 
@@ -106,15 +124,12 @@ var Board = React.createClass({
     var playerTurns = this.currentPlayer().playedTurns;
     playerTurns.push(index);
     for (var i = 0; i < this.state.winningCombos.length; i++) {
-      if (playerTurns.length == this.state.winningCombos[i].length &&
-      // Use includes here
-      playerTurns.every(function (elem) {
+      if (playerTurns.length == this.state.winningCombos[i].length && playerTurns.every(function (elem) {
         return _this.state.winningCombos[i].includes(elem);
-      })
-      //playerTurns.every((elem, index ) => elem === this.state.winningCombos[i][index])
-      ) {
-          console.log('Game Over');
-        }
+      })) {
+        console.log('Game Over');
+        this.setState({ gameOver: true });
+      }
     }
   },
 
@@ -129,7 +144,8 @@ var Board = React.createClass({
     return React.createElement(
       'div',
       null,
-      React.createElement(InfoBoard, { player: this.currentPlayer()._name }),
+      this.state.gameOver ? React.createElement(GameOver, { player: this.currentPlayer()._name }) : null,
+      this.state.gameOver ? null : React.createElement(InfoBoard, { player: this.currentPlayer()._name }),
       React.createElement(
         'table',
         { className: 'tictactoe', style: this.tableStyle },

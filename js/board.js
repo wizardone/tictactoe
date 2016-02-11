@@ -13,6 +13,14 @@ var InfoBoard = React.createClass({
   }
 });
 
+var GameOver = React.createClass({
+  render: function(){
+    return <div>{this.props.player} won.
+              <a>Play again?</a>
+           </div>
+  }
+});
+
 var Board = React.createClass({
   tableStyle: {
     width: 400,
@@ -96,6 +104,7 @@ var Board = React.createClass({
          playerTurns.every(elem => this.state.winningCombos[i].includes(elem))
          ) {
          console.log('Game Over');
+         this.setState({gameOver: true});
       }
     }
   },
@@ -113,7 +122,8 @@ var Board = React.createClass({
   render: function () {
     return (
       <div>
-      <InfoBoard player={this.currentPlayer()._name}/>
+      { this.state.gameOver ? <GameOver player={this.currentPlayer()._name}/> : null }
+      { this.state.gameOver ? null : <InfoBoard player={this.currentPlayer()._name}/> }
       <table className="tictactoe" style={this.tableStyle}>
       <tbody>
       <tr>
