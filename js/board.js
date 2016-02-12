@@ -14,9 +14,20 @@ var InfoBoard = React.createClass({
 });
 
 var GameOver = React.createClass({
-  render: function(){
+  getInitialState: function(){
+    return {
+      gameOver: true
+    }
+  },
+
+  newGame: function() {
+    //So lame, that it hurts
+    //window.reload();
+  },
+
+  render: function() {
     return <div>{this.props.player} won.
-              <a>Play again?</a>
+              <a onClick={this.newGame()}>Play again?</a>
            </div>
   }
 });
@@ -59,7 +70,7 @@ var Board = React.createClass({
 
   handleClick: function(item) {
     var index = parseInt(item.target.className.split('_')[1]);
-    if (!isNaN(index) && this.state.takenIndexes.indexOf(index) < 0) {
+    if (!isNaN(index) && this.state.takenIndexes.indexOf(index) < 0 && !this.state.gameOver == true) {
       this.setImage(item.target);
       this.handleTurn();
       this.updateTakenIndexes(index);
@@ -117,10 +128,14 @@ var Board = React.createClass({
     return player;
   },
 
+  startNewGame: function() {
+    this.forceUpdate();
+  },
+
   render: function () {
     return (
       <div>
-      { this.state.gameOver ? <GameOver player={this.currentPlayer()._name}/> : null }
+      { this.state.gameOver ? <GameOver player={this.currentPlayer()._name} newGameCallback={this.startNewGame} /> : null }
       { this.state.gameOver ? null : <InfoBoard player={this.currentPlayer()._name}/> }
       <table className="tictactoe" style={this.tableStyle}>
       <tbody>
