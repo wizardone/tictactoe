@@ -8,27 +8,17 @@ var _player1 = new Player('cross');
 var _player2 = new Player('circle');
 
 var InfoBoard = React.createClass({
+  playAgain: function() {
+    location.reload();
+  },
+
   render: function () {
-    return <div className="playerTurn"> Current turn: {this.props.player}</div>
-  }
-});
-
-var GameOver = React.createClass({
-  getInitialState: function(){
-    return {
-      gameOver: true
+    return <div className="playerTurn">
+    { this.props.gameOver == false ?
+      (<p>Current turn: {this.props.player}</p>) :
+       <p>Game Over! {this.props.player} won! <a href='#' onClick={this.playAgain.bind(this)}>Play again?</a></p>
     }
-  },
-
-  newGame: function() {
-    //So lame, that it hurts
-    //window.reload();
-  },
-
-  render: function() {
-    return <div>{this.props.player} won.
-              <a onClick={this.newGame()}>Play again?</a>
-           </div>
+    </div>
   }
 });
 
@@ -53,19 +43,12 @@ var Board = React.createClass({
   getInitialState: function () {
     return {
       takenIndexes: [],
-      totalTurns: 0,
       currentTurn: 0,
+      gameOver: false,
       winningCombos: [[0,1,2], [3,4,5], [6,7,8],
         [0,3,6], [1,4,7], [2,5,8],
         [0,4,8], [2,4,6]]
     }
-  },
-
-  componentDidMount: function () {
-    //console.log('Mounting component');
-    //console.log('Players: ' + this.state.players);
-    //console.log('First Turn: ' + this.state.firstTurn);
-    //console.log('Current Turn: ' + this.state.currentTurn);
   },
 
   handleClick: function(item) {
@@ -97,8 +80,7 @@ var Board = React.createClass({
     else if (this.state.currentTurn == 1)
       turn = 0
 
-    this.setState({totalTurns: this.state.totalTurns + 1,
-                  currentTurn: turn});
+    this.setState({ currentTurn: turn });
   },
 
   updateTakenIndexes: function(index) {
@@ -128,15 +110,10 @@ var Board = React.createClass({
     return player;
   },
 
-  startNewGame: function() {
-    this.forceUpdate();
-  },
-
   render: function () {
     return (
       <div>
-      { this.state.gameOver ? <GameOver player={this.currentPlayer()._name} newGameCallback={this.startNewGame} /> : null }
-      { this.state.gameOver ? null : <InfoBoard player={this.currentPlayer()._name}/> }
+      <InfoBoard player={this.currentPlayer()._name} gameOver={this.state.gameOver}/>
       <table className="tictactoe" style={this.tableStyle}>
       <tbody>
       <tr>

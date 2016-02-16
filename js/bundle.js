@@ -16,40 +16,30 @@ var _player2 = new _player3.default('circle');
 var InfoBoard = React.createClass({
   displayName: 'InfoBoard',
 
+  playAgain: function playAgain() {
+    location.reload();
+  },
+
   render: function render() {
     return React.createElement(
       'div',
       { className: 'playerTurn' },
-      ' Current turn: ',
-      this.props.player
-    );
-  }
-});
-
-var GameOver = React.createClass({
-  displayName: 'GameOver',
-
-  getInitialState: function getInitialState() {
-    return {
-      gameOver: true
-    };
-  },
-
-  newGame: function newGame() {
-    //So lame, that it hurts
-    //window.reload();
-  },
-
-  render: function render() {
-    return React.createElement(
-      'div',
-      null,
-      this.props.player,
-      ' won.',
-      React.createElement(
-        'a',
-        { onClick: this.newGame() },
-        'Play again?'
+      this.props.gameOver == false ? React.createElement(
+        'p',
+        null,
+        'Current turn: ',
+        this.props.player
+      ) : React.createElement(
+        'p',
+        null,
+        'Game Over! ',
+        this.props.player,
+        ' won! ',
+        React.createElement(
+          'a',
+          { href: '#', onClick: this.playAgain.bind(this) },
+          'Play again?'
+        )
       )
     );
   }
@@ -78,17 +68,10 @@ var Board = React.createClass({
   getInitialState: function getInitialState() {
     return {
       takenIndexes: [],
-      totalTurns: 0,
       currentTurn: 0,
+      gameOver: false,
       winningCombos: [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]]
     };
-  },
-
-  componentDidMount: function componentDidMount() {
-    //console.log('Mounting component');
-    //console.log('Players: ' + this.state.players);
-    //console.log('First Turn: ' + this.state.firstTurn);
-    //console.log('Current Turn: ' + this.state.currentTurn);
   },
 
   handleClick: function handleClick(item) {
@@ -119,8 +102,7 @@ var Board = React.createClass({
     var turn;
     if (this.state.currentTurn == 0) turn = 1;else if (this.state.currentTurn == 1) turn = 0;
 
-    this.setState({ totalTurns: this.state.totalTurns + 1,
-      currentTurn: turn });
+    this.setState({ currentTurn: turn });
   },
 
   updateTakenIndexes: function updateTakenIndexes(index) {
@@ -149,16 +131,11 @@ var Board = React.createClass({
     return player;
   },
 
-  startNewGame: function startNewGame() {
-    this.forceUpdate();
-  },
-
   render: function render() {
     return React.createElement(
       'div',
       null,
-      this.state.gameOver ? React.createElement(GameOver, { player: this.currentPlayer()._name, newGameCallback: this.startNewGame }) : null,
-      this.state.gameOver ? null : React.createElement(InfoBoard, { player: this.currentPlayer()._name }),
+      React.createElement(InfoBoard, { player: this.currentPlayer()._name, gameOver: this.state.gameOver }),
       React.createElement(
         'table',
         { className: 'tictactoe', style: this.tableStyle },
